@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İSG Süreç & Doküman Yönetim Portalı</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; }
+        .wrapper { display: flex; width: 100%; min-height: 100vh; }
+        #sidebar { min-width: 260px; max-width: 260px; background: #2c3e50; color: #fff; }
+        .sidebar-header { padding: 15px; background: #1a252f; font-weight: bold; font-size: 1.1rem; border-bottom: 1px solid #34495e; }
+        .nav-link-custom { color: #ecf0f1; padding: 12px 15px; display: block; text-decoration: none; border-bottom: 1px solid #34495e; cursor: pointer; }
+        .nav-link-custom:hover { background: #34495e; color: #1abc9c; }
+        .sub-menu { background: #1a252f; padding-left: 10px; }
+        .sub-menu a { color: #bdc3c7; font-size: 0.88rem; padding: 10px 15px; display: block; text-decoration: none; cursor: pointer; }
+        .sub-menu a:hover { color: #fff; background: #2980b9; }
+        #content { flex: 1; padding: 25px; }
+        
+        .page-section { display: none; }
+        .page-section.active { display: block; }
+
+        .module-tile { border-radius: 8px; color: white; padding: 20px; text-align: center; cursor: pointer; transition: transform 0.2s; margin-bottom: 15px; }
+        .module-tile:hover { transform: translateY(-3px); }
+        .tile-red { background-color: #e74c3c; }
+        .tile-yellow { background-color: #f39c12; }
+        .tile-blue { background-color: #2980b9; }
+        .tile-teal { background-color: #1abc9c; }
+        .tile-purple { background-color: #8e44ad; }
+
+        .card-custom { border: none; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- PAPERWORK STİLİ SOL AĞAÇ MENÜ -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <i class="bi bi-folder-fill text-warning me-2"></i>İSG Portalı
+        </div>
+        <div>
+            <a class="nav-link-custom" onclick="showPage('page-dashboard')"><i class="bi bi-speedometer2 me-2"></i>Dashboard & Ana Sayfa</a>
+            
+            <a class="nav-link-custom" data-bs-toggle="collapse" href="#menuSaha"><i class="bi bi-clipboard-check me-2"></i>Saha Denetim & DÖF <i class="bi bi-chevron-down float-end"></i></a>
+            <div class="collapse sub-menu" id="menuSaha">
+                <a onclick="showPage('page-denetim')"><i class="bi bi-card-checklist me-2"></i>Saha Denetim Kaydı</a>
+                <a onclick="showPage('page-aksiyon')"><i class="bi bi-arrow-repeat me-2"></i>Aksiyon Takibi (DÖF)</a>
+            </div>
+
+            <a class="nav-link-custom" data-bs-toggle="collapse" href="#menuPersonel"><i class="bi bi-people me-2"></i>Personel & Sertifikalar <i class="bi bi-chevron-down float-end"></i></a>
+            <div class="collapse sub-menu" id="menuPersonel">
+                <a onclick="showPage('page-personel')"><i class="bi bi-person-badge me-2"></i>Personel & MYK Yönetimi</a>
+            </div>
+
+            <a class="nav-link-custom" data-bs-toggle="collapse" href="#menuOlay"><i class="bi bi-exclamation-triangle me-2"></i>Olay & Ramak Kala <i class="bi bi-chevron-down float-end"></i></a>
+            <div class="collapse sub-menu" id="menuOlay">
+                <a onclick="showPage('page-ramak-kala')"><i class="bi bi-shield-exclamation me-2"></i>Ramak Kala Bildirimleri</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SAĞ MODÜLER İÇERİK ALANI -->
+    <div id="content">
+
+        <!-- SAYFA 1: DASHBOARD -->
+        <div id="page-dashboard" class="page-section active">
+            <h4 class="fw-bold mb-3"><i class="bi bi-grid-3x3-gap-fill text-primary me-2"></i>Süreç Yönetim Paneli</h4>
+            
+            <div class="row mb-4">
+                <div class="col-md-3 col-6">
+                    <div class="module-tile tile-blue" onclick="showPage('page-denetim')">
+                        <i class="bi bi-clipboard-check fs-1"></i>
+                        <div class="mt-2 fw-bold">Saha Denetimleri</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="module-tile tile-teal" onclick="showPage('page-aksiyon')">
+                        <i class="bi bi-arrow-repeat fs-1"></i>
+                        <div class="mt-2 fw-bold">Aksiyon Takibi</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="module-tile tile-yellow" onclick="showPage('page-personel')">
+                        <i class="bi bi-person-badge fs-1"></i>
+                        <div class="mt-2 fw-bold">Personel & MYK</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="module-tile tile-red" onclick="showPage('page-ramak-kala')">
+                        <i class="bi bi-exclamation-triangle fs-1"></i>
+                        <div class="mt-2 fw-bold">Ramak Kala Olayları</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card card-custom p-3">
+                        <h6 class="fw-bold mb-3"><i class="bi bi-pie-chart me-2"></i>Ramak Kala Risk Dağılımı</h6>
+                        <div style="height: 250px;" class="d-flex justify-content-center">
+                            <canvas id="riskChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-custom p-3 bg-dark text-white">
+                        <h6 class="fw-bold mb-3 text-warning"><i class="bi bi-info-circle me-2"></i>Genel Sistem İstatistikleri</h6>
+                        <div class="mb-3">Kayıtlı Personel: <span id="kpiPersonel" class="badge bg-primary fs-6 float-end">0</span></div>
+                        <div class="mb-3">Açık Denetim Kaydı: <span id="kpiDenetim" class="badge bg-success fs-6 float-end">0</span></div>
+                        <div class="mb-3">Aktif Aksiyon/DÖF: <span id="kpiAksiyon" class="badge bg-info fs-6 float-end">0</span></div>
+                        <div>Ramak Kala Bildirimi: <span id="kpiRamakKala" class="badge bg-warning text-dark fs-6 float-end">0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SAYFA 2: SAHA DENETİM KABİNETİ -->
+        <div id="page-denetim" class="page-section">
+            <h4 class="fw-bold mb-3 text-primary"><i class="bi bi-clipboard-check me-2"></i>Saha Denetim & Uygunsuzluk Formu</h4>
+            <div class="card card-custom p-3 mb-4">
+                <form id="formDenetim" class="row g-3">
+                    <div class="col-md-3"><label class="form-label">Saha / Lokasyon</label><input type="text" id="dLokasyon" class="form-control" required></div>
+                    <div class="col-md-3"><label class="form-label">Denetçi</label><input type="text" id="dDenetci" class="form-control" required></div>
+                    <div class="col-md-3"><label class="form-label">Ekipman / Alan</label><input type="text" id="dAlan" class="form-control" required></div>
+                    <div class="col-md-3">
+                        <label class="form-label">Kategori</label>
+                        <select id="dKategori" class="form-select">
+                            <option value="PPE / KKD Kullanımı">PPE / KKD Kullanımı</option>
+                            <option value="Yüksekte Çalışma">Yüksekte Çalışma</option>
+                            <option value="Elektrik Güvenliği">Elektrik Güvenliği</option>
+                            <option value="Makine Muhafazaları">Makine Muhafazaları</option>
+                            <option value="Genel Düzen & Temizlik">Genel Düzen & Temizlik</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12"><label class="form-label">Ters Düşen Durum / Uygunsuzluk Tanımı</label><textarea id="dTanim" class="form-control" rows="2" required></textarea></div>
+                    <div class="col-12"><button type="submit" class="btn btn-primary fw-bold">+ Saha Denetim Kaydını Oluştur</button></div>
+                </form>
+            </div>
+
+            <div class="card card-custom p-3">
+                <h6 class="fw-bold mb-3">Saha Denetim Kayıtları</h6>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle small">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Lokasyon</th>
+                                <th>Denetçi</th>
+                                <th>Ekipman/Alan</th>
+                                <th>Kategori</th>
+                                <th>Uygunsuzluk Tanımı</th>
+                                <th>Tarih</th>
+                                <th class="text-end">İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableDenetim"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SAYFA 3: AKSİYON & DÖF TAKİBİ -->
+        <div id="page-aksiyon" class="page-section">
+            <h4 class="fw-bold mb-3 text-teal"><i class="bi bi-arrow-repeat me-2"></i>Aksiyon & DÖF Takip Süreci</h4>
+            <div class="card card-custom p-3 mb-4">
+                <form id="formAksiyon" class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">İlişkili Denetim Kaydı</label>
+                        <select id="aDenetimId" class="form-select" required></select>
+                    </div>
+                    <div class="col-md-3"><label class="form-label">Sorumlu Personel</label><input type="text" id="aSorumlu" class="form-control" required></div>
+                    <div class="col-md-3"><label class="form-label">Termin Tarihi</label><input type="date" id="aTermin" class="form-control" required></div>
+                    <div class="col-md-3">
+                        <label class="form-label">Öncelik</label>
+                        <select id="aOncelik" class="form-select">
+                            <option value="Düşük">Düşük</option>
+                            <option value="Orta">Orta</option>
+                            <option value="Yüksek / Kritik">Yüksek / Kritik</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12"><label class="form-label">Alınacak Düzeltici / Önleyici Faaliyet (Aksiyon)</label><input type="text" id="aAksiyon" class="form-control" required></div>
+                    <div class="col-12"><button type="submit" class="btn btn-success fw-bold">+ Aksiyon Tanımla</button></div>
+                </form>
+            </div>
+
+            <div class="card card-custom p-3">
+                <h6 class="fw-bold mb-3">Aktif Aksiyon / DÖF Listesi</h6>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle small">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Sorumlu</th>
+                                <th>Aksiyon Adımı</th>
+                                <th>Termin Tarihi</th>
+                                <th>Öncelik</th>
+                                <th>Durum</th>
+                                <th class="text-end">İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableAksiyon"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SAYFA 4: PERSONEL & MYK KABİNETİ -->
+        <div id="page-personel" class="page-section">
+            <h4 class="fw-bold mb-3 text-warning"><i class="bi bi-person-badge me-2"></i>Personel & Sertifika / MYK Kabineti</h4>
+            <div class="card card-custom p-3 mb-4">
+                <form id="formPersonel" class="row g-3">
+                    <div class="col-md-3"><label class="form-label">Ad Soyad</label><input type="text" id="pAd" class="form-control" required></div>
+                    <div class="col-md-3"><label class="form-label">TC Kimlik No</label><input type="text" id="pTc" class="form-control"></div>
+                    <div class="col-md-3"><label class="form-label">Departman</label><input type="text" id="pDepartman" class="form-control"></div>
+                    <div class="col-md-3"><label class="form-label">Görevi / Unvanı</label><input type="text" id="pGorev" class="form-control" required></div>
+                    <div class="col-md-4"><label class="form-label">MYK Belge Kodu / Adı</label><input type="text" id="pMyk" class="form-control"></div>
+                    <div class="col-md-4"><label class="form-label">Alınan Sertifikalar / Eğitimler</label><input type="text" id="pSertifika" class="form-control"></div>
+                    <div class="col-md-4"><label class="form-label">Sağlık Raporu Yenileme Tarihi</label><input type="date" id="pTarih" class="form-control" required></div>
+                    <div class="col-12"><button type="submit" class="btn btn-warning text-dark fw-bold">+ Personel Kaydet</button></div>
+                </form>
+            </div>
+
+            <div class="card card-custom p-3">
+                <h6 class="fw-bold mb-3">Kayıtlı Personel Listesi</h6>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle small">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Ad Soyad</th>
+                                <th>Departman / Görev</th>
+                                <th>MYK Belgesi</th>
+                                <th>Eğitim/Sertifikalar</th>
+                                <th>Sağlık Raporu Tarihi</th>
+                                <th class="text-end">İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablePersonel"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SAYFA 5: RAMAK KALA KABİNETİ -->
+        <div id="page-ramak-kala" class="page-section">
+            <h4 class="fw-bold mb-3 text-danger"><i class="bi bi-shield-exclamation me-2"></i>Ramak Kala & Tehlike Olay Kabineti</h4>
+            <div class="card card-custom p-3 mb-4">
+                <form id="formRamakKala" class="row g-3">
+                    <div class="col-md-4"><label class="form-label">Olay Yeri / Birim</label><input type="text" id="rYere" class="form-control" required></div>
+                    <div class="col-md-4"><label class="form-label">Tehlike Seviyesi</label>
+                        <select id="rSeviye" class="form-select">
+                            <option value="Düşük Risk">Düşük Risk</option>
+                            <option value="Orta Risk">Orta Risk</option>
+                            <option value="Yüksek Risk">Yüksek Risk</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4"><label class="form-label">Bildiren Personel</label><input type="text" id="rBildiren" class="form-control"></div>
+                    <div class="col-md-12"><label class="form-label">Olay / Potansiyel Tehlike Açıklaması</label><textarea id="rTanim" class="form-control" rows="2" required></textarea></div>
+                    <div class="col-12"><button type="submit" class="btn btn-danger fw-bold">Olay Bildirimi Yap</button></div>
+                </form>
+            </div>
+
+            <div class="card card-custom p-3">
+                <h6 class="fw-bold mb-3">Bildirilen Olaylar</h6>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle small">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Olay Yeri</th>
+                                <th>Açıklama</th>
+                                <th>Tehlike Seviyesi</th>
+                                <th>Bildiren</th>
+                                <th>Tarih</th>
+                                <th class="text-end">İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableRamakKala"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
